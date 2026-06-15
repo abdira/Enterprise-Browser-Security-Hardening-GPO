@@ -1,4 +1,4 @@
-this is my readme file : "# Enterprise Browser Security Hardening & Download Restriction Using Active Directory GPO
+# Enterprise Browser Security Hardening & Download Restriction Using Active Directory GPO
 
 This project simulates a real-world enterprise browser security control used to reduce malware infections, phishing attacks, ransomware delivery, drive-by downloads, and data exfiltration risks.
 
