@@ -355,17 +355,25 @@ Go to:
 
 
 Chrome Enterprise Download
+
 Download: Google Chrome Enterprise MSI
+
 Example file: GoogleChromeStandaloneEnterprise64.msi
 
 ---
 
 ### Step 2: Create a Shared Folder
-On my Domain Controller:
+
+On Domain Controller
+
 Create:
+
 C:\Software\Chrome
+
 Copy the MSI file into this folder:
+
 C:\Software\Chrome\GoogleChromeStandaloneEnterprise64.msi
+
 
 ### Step 3: Share the Folder
 
@@ -378,11 +386,12 @@ C:\Software\Chrome\GoogleChromeStandaloneEnterprise64.msi
 4. Set Share Name: Chrome
 
 5. Click Permissions and add:
-   Group	        Permission
-   Everyone	      Read
-Domain Computers	 Read
+   
+   Group                        Permission
+   Everyone	                    Read
+   Domain Computers	            Read
 
-6. Click OK twice
+7. Click OK twice
 
  UNC Path:
   \\DC01\Chrome
@@ -417,10 +426,12 @@ Computer Configuration
 Right-click Software Installation → New → Package
 
 ⚠️ Important: Use UNC Path, NOT Local Path
-✅ Correct	                                                  ❌ Wrong
-\\DC01\Chrome\GoogleChromeStandaloneEnterprise64.msi	        C:\Software\Chrome\GoogleChromeStandaloneEnterprise64.msi
+✅ Correct	                                                    ❌ Wrong
+\\DC01\Chrome\GoogleChromeStandaloneEnterprise64.msi	          C:\Software\Chrome\GoogleChromeStandaloneEnterprise64.msi
+
 
 ### Step 7: Choose Deployment Method
+
 Select:
  Assigned
 Click OK
