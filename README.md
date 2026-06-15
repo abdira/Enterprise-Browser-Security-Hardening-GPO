@@ -426,8 +426,8 @@ Computer Configuration
 Right-click Software Installation → New → Package
 
 ⚠️ Important: Use UNC Path, NOT Local Path
-✅ Correct	                                                    ❌ Wrong
-\\DC01\Chrome\GoogleChromeStandaloneEnterprise64.msi	          C:\Software\Chrome\GoogleChromeStandaloneEnterprise64.msi
+✅ Correct	 \\DC01\Chrome\GoogleChromeStandaloneEnterprise64.msi	                                                                          ❌ Wrong   C:\Software\Chrome\GoogleChromeStandaloneEnterprise64.msi
+	          
 
 
 ### Step 7: Choose Deployment Method
@@ -550,7 +550,7 @@ Policies must be applied in this specific order:
 ### Step-by-Step Commands
 
 **On the Domain Controller:**
-```cmd
+
 gpupdate /force
 shutdown /r /t 0
 
