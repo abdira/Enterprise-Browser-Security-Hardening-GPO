@@ -44,94 +44,98 @@ All controls are centrally managed through Active Directory and automatically en
 
 ---
 
+
+```
 Enterprise Download Restriction GPO – Browser-Based Attack Mitigation/
-│
+|
 ├── README.md
-│
+|
 ├── architecture/
-│ └── lab-diagram.png
-│
+|   └── lab-diagram.png
+|
 ├── before-policy/
-│ ├── attachment-downloads/
-│ │ ├── 01-Login Client Machine-.png
-│ │ ├── 02-Sign In Gmail Account.png
-│ │ ├── 03-Email Attachment Download.png
-│ │ └── 04-Email Attachment Opened.png
-│ ├── developer-tools-enabled/
-│ │ └── 08-Developer tools are accessible.png
-│ ├── downloads-allowed/
-│ │ └── 10-Files can be downloaded from any source.png
-│ ├── extensions-allowed/
-│ │ └── 09-Browser extensions can be installed freely.png
-│ ├── incognito-enabled/
-│ │ └── 07-Incognito Mode is Available.png
-│ └── unrestricted-web-access/
-│ ├── 05-Access-To-Any Website.png
-│ └── 06-Access-To-Any Website.png
-│
+|   ├── attachment-downloads/
+|   |   ├── 01-Login Client Machine-.png
+|   |   ├── 02-Sign In Gmail Account.png
+|   |   ├── 03-Email Attachment Download.png
+|   |   └── 04-Email Attachment Opened.png
+|   ├── developer-tools-enabled/
+|   |   └── 08-Developer tools are accessible.png
+|   ├── downloads-allowed/
+|   |   └── 10-Files can be downloaded from any source.png
+|   ├── extensions-allowed/
+|   |   └── 09-Browser extensions can be installed freely.png
+|   ├── incognito-enabled/
+|   |   └── 07-Incognito Mode is Available.png
+|   └── unrestricted-web-access/
+|       ├── 05-Access-To-Any Website.png
+|       └── 06-Access-To-Any Website.png
+|
 ├── after-policy/
-│ ├── chrome-policy/
-│ │ └── Chrome-Policies.png
-│ ├── developer-tools-disabled/
-│ │ └── Devtools-Disabled.png
-│ ├── download-restriction/
-│ │ ├── Email Attachment Download Blocked.png
-│ │ ├── Gmail Sign In.png
-│ │ └── Website Download Blocked.png
-│ ├── extension-control/
-│ │ └── Extension Installation Blocked.png
-│ ├── gpresult/
-│ │ └── gpresult policy applied.html
-│ ├── incognito-disabled/
-│ │ └── Incognito Mode Disabled.png
-│ └── url-filtering/
-│ ├── Authorized Domain allowed.png
-│ └── Unauthorized Website Access Blocked.png
-│
+|   ├── chrome-policy/
+|   |   └── Chrome-Policies.png
+|   ├── developer-tools-disabled/
+|   |   └── Devtools-Disabled.png
+|   ├── download-restriction/
+|   |   ├── Email Attachment Download Blocked.png
+|   |   ├── Gmail Sign In.png
+|   |   └── Website Download Blocked.png
+|   ├── extension-control/
+|   |   └── Extension Installation Blocked.png
+|   ├── gpresult/
+|   |   └── gpresult policy applied.html
+|   ├── incognito-disabled/
+|   |   └── Incognito Mode Disabled.png
+|   └── url-filtering/
+|       ├── Authorized Domain allowed.png
+|       └── Unauthorized Website Access Blocked.png
+|
 └── gpo-configuration/
-├── chrome-deployment/
-│ ├── 02-Chrome installed.png
-│ ├── Assigned Package.png
-│ ├── Chrome Installed.png
-│ ├── GPO Linked to Domain.png
-│ ├── Shared Chrome Repository.png
-│ └── Software Installation Package.png
-├── Developer tools policy/
-│ ├── Developer-Tools-Configuration-gpo.png
-│ └── Disallowing-Developer-Tools-gpo.png
-├── Downloads policy/
-│ ├── 01-Block-All-Download-gpo.png
-│ └── 02-Block-All-Download-gpo.png
-├── Extension policy/
-│ ├── 01-Configure-Extension-Block-List-gpo.png
-│ └── 02-Configure-Extension-Blocklist-gpo.png
-├── gpo-creation/
-│ ├── 01-finding-group-policy-management.png
-│ ├── 01-gpmc-open.png
-│ ├── 02-create-gpo.png
-│ ├── 03-create-gpo.png
-│ ├── chrome-policy.png
-│ └── edit-gpo.png
-├── Incognito policy/
-│ ├── 01-Incognito mode availability-gpo.png
-│ └── Incognito-mode-disabled-gpo.png
-├── Safe browsing policy/
-│ ├── 02-Safe-Browsing-Protection-level-gpo.png
-│ └── Safe-Browsing-Protection-level-gpo.png
-├── srp-gpo/
-│ ├── 02-srp-gpo-creation.png
-│ ├── downloads-path-rule.png
-│ ├── edge-blocked-message.png
-│ ├── edge-path-rule.png
-│ ├── security-filtering.png
-│ └── srp-gpo-creation.png
-├── Urls filtering policy/
-│ ├── 01-Allow-Access-To-Urls-gpo.png
-│ ├── 01-Block-Access-To-Urls-gpo.png
-│ ├── 02-Allow-Access-To-Urls-gpo.png
-│ ├── 02-Block-Access-To-Urls-gpo.png
-│ └── 03-Allow-Access-To-Certain-Urls-gpo.png
-└── gpupdate.png
+    ├── chrome-deployment/
+    |   ├── 02-Chrome installed.png
+    |   ├── Assigned Package.png
+    |   ├── Chrome Installed.png
+    |   ├── GPO Linked to Domain.png
+    |   ├── Shared Chrome Repository.png
+    |   └── Software Installation Package.png
+    ├── Developer tools policy/
+    |   ├── Developer-Tools-Configuration-gpo.png
+    |   └── Disallowing-Developer-Tools-gpo.png
+    ├── Downloads policy/
+    |   ├── 01-Block-All-Download-gpo.png
+    |   └── 02-Block-All-Download-gpo.png
+    ├── Extension policy/
+    |   ├── 01-Configure-Extension-Block-List-gpo.png
+    |   └── 02-Configure-Extension-Blocklist-gpo.png
+    ├── gpo-creation/
+    |   ├── 01-finding-group-policy-management.png
+    |   ├── 01-gpmc-open.png
+    |   ├── 02-create-gpo.png
+    |   ├── 03-create-gpo.png
+    |   ├── chrome-policy.png
+    |   └── edit-gpo.png
+    ├── Incognito policy/
+    |   ├── 01-Incognito mode availability-gpo.png
+    |   └── Incognito-mode-disabled-gpo.png
+    ├── Safe browsing policy/
+    |   ├── 02-Safe-Browsing-Protection-level-gpo.png
+    |   └── Safe-Browsing-Protection-level-gpo.png
+    ├── srp-gpo/
+    |   ├── 02-srp-gpo-creation.png
+    |   ├── downloads-path-rule.png
+    |   ├── edge-blocked-message.png
+    |   ├── edge-path-rule.png
+    |   ├── security-filtering.png
+    |   └── srp-gpo-creation.png
+    ├── Urls filtering policy/
+    |   ├── 01-Allow-Access-To-Urls-gpo.png
+    |   ├── 01-Block-Access-To-Urls-gpo.png
+    |   ├── 02-Allow-Access-To-Urls-gpo.png
+    |   ├── 02-Block-Access-To-Urls-gpo.png
+    |   └── 03-Allow-Access-To-Certain-Urls-gpo.png
+    └── gpupdate.png
+```
+
 
 # Security Controls Implemented
 
