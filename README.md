@@ -1,682 +1,858 @@
-\# Blocking Email Attachment Downloads Using Group Policy
+this is my readme file : "# Enterprise Browser Security Hardening & Download Restriction Using Active Directory GPO
 
+This project simulates a real-world enterprise browser security control used to reduce malware infections, phishing attacks, ransomware delivery, drive-by downloads, and data exfiltration risks.
 
+---
 
-> This project simulates a real-world enterprise security control used to prevent malware infections and data breaches.
+## Overview
 
+This project demonstrates the implementation of an enterprise browser security baseline using Active Directory Group Policy Objects (GPO) and Google Chrome Enterprise Administrative Templates.
 
+The goal was to reduce browser-based attack vectors commonly used in phishing campaigns, malware delivery, ransomware infections, drive-by downloads, and unauthorized data transfers.
 
-\---
+The solution combines multiple security controls including:
 
+* Download Restrictions
+* Domain Allowlisting
+* URL Blocklisting
+* Browser Extension Control
+* Safe Browsing Enforcement
+* Incognito Mode Restriction
+* Developer Tools Restriction
+* Browser Hardening Policies
 
+All controls are centrally managed through Active Directory and automatically enforced across domain-joined Windows endpoints.
 
-\## Overview
+---
 
+## Lab Environment
 
+* **Domain:** saada.local
+* **Domain Controller:** Windows Server (Active Directory)
+* **Client Machine:** Windows 10 (Domain Joined)
+* **Browser:** Google Chrome Enterprise
 
-This project demonstrates how to prevent users from downloading email attachments using \*\*Group Policy\*\* in a Windows domain environment.
+---
 
+## Technologies Used
 
+* Active Directory Domain Services (AD DS)
+* Group Policy Management Console (GPMC)
+* Google Chrome Enterprise Administrative Templates (ADMX)
+* Windows Server
+* Windows 10 Enterprise
 
-The objective is to replicate a real-world enterprise security scenario where organizations restrict file downloads to reduce the risk of \*\*malware infections, phishing attacks, and data exfiltration\*\*.
+---
 
+# Security Controls Implemented
 
+| Control                     | Purpose                                       |
+| --------------------------- | --------------------------------------------- |
+| Download Restriction        | Prevent malicious file downloads              |
+| URL Allowlist               | Allow only approved business websites         |
+| URL Blocklist               | Block unauthorized websites                   |
+| Extension Control           | Prevent installation of unapproved extensions |
+| Safe Browsing Enforcement   | Protect users from phishing and malware       |
+| Incognito Restriction       | Improve monitoring and policy enforcement     |
+| Developer Tools Restriction | Reduce browser abuse opportunities            |
+| Browser Hardening Baseline  | Standardize secure browser settings           |
 
-\---
+---
 
+## Architecture Diagram
 
+This lab simulates a domain-controlled environment where browser security policies are centrally managed through Group Policy.
 
-\## Lab Environment
+![Lab Diagram](architecture/lab-diagram.png)
 
+### Policy Flow
 
+1. User logs into a domain-joined Windows 10 workstation
+2. Active Directory applies Group Policy
+3. Google Chrome receives enterprise policy settings
+4. Security controls are enforced automatically
+5. User activity is restricted according to organizational policy
 
-\* \*\*Domain\*\*: saada.local
+---
 
-\* \*\*Domain Controller\*\*: Windows Server (Active Directory)
+## Scenario
 
-\* \*\*Client Machine\*\*: Windows 10 (domain-joined)
+### Before Policy Implementation
 
-\* \*\*Browser\*\*: Google Chrome
-
-
-
-\---
-
-
-
-\## Technologies Used
-
-
-
-\* Active Directory Domain Services (AD DS)
-
-\* Group Policy Management Console (GPMC)
-
-\* Google Chrome Enterprise Policies (ADMX Templates)
-
-
-
-\---
-
-
-
-\## 🧭 Architecture Diagram
-
-
-
-This lab simulates a domain-controlled environment where user actions are centrally managed using Group Policy.
-
-
-
-!\[Lab Diagram](architecture/lab-diagram.png)
-
-
-
-\### Flow
-
-
-
-1\. User logs into a domain-joined Windows 10 machine  
-
-2\. Opens Google Chrome browser  
-
-3\. Accesses web-based email (e.g., Gmail / Outlook)  
-
-4\. Attempts to download an email attachment  
-
-5\. Group Policy enforces download restriction  
-
-
-
-\---
-
-
-
-\## Scenario
-
-
-
-\### Before Policy Implementation
-
-
-
-\* User can access email via browser  
-
-\* Attachments can be downloaded without restriction  
-
-\* Files are saved locally on the machine  
-
-
+* Users can access any website
+* Attachments can be downloaded without restriction
+* Browser extensions can be installed freely
+* Incognito mode is available
+* Developer tools are accessible
+* Files can be downloaded from any source
 
 📸 See screenshots in: `/before-policy/`
 
+### After Policy Implementation
 
-
-\### After Policy Implementation
-
-
-
-\* User attempts to download attachment  
-
-\* Download is blocked by Group Policy  
-
-\* Browser enforces enterprise security restriction  
-
-
+* Download attempts are blocked
+* Unauthorized websites are restricted
+* Browser extensions are controlled
+* Safe Browsing is enforced
+* Incognito mode is disabled
+* Developer tools are disabled
 
 📸 See screenshots in: `/after-policy/`
 
+---
 
+# Chrome Enterprise Policy Configuration
 
-\---
+## Download Restrictions
 
+Policy:
 
+```text
+DownloadRestrictions = Block all downloads
+```
 
-\## 🔧 Implementation Steps (GUI-Based)
+Purpose:
 
+* Blocks all downloads
+* Reduces malware delivery risk
+* Mitigates ransomware infection vectors
 
+---
 
-\### 1. Install Chrome ADMX Templates
+## Domain Allowlisting
 
+Policies:
 
+```text
+URLAllowlist
+URLBlocklist
+```
 
-\* Download Chrome ADMX Templates
+Example Configuration:
 
-&#x20; 1. Open Google Chrome on your Domain Controller
+Allowed:
 
-&#x20; 2. Go to: https://www.google.com/chrome/business/
+```text
+https://github.com/*
+https://*.microsoft.com/*
+https://*.office.com/*
+```
 
-&#x20; 3. Click: “Chrome Enterprise download”
+Blocked:
 
-&#x20; 4. Download: Chrome Enterprise Bundle (ZIP)
+```text
+*
+```
 
+Purpose:
 
+* Restricts browsing to approved business websites
+* Reduces exposure to phishing domains
+* Limits access to malicious content
 
-&#x20; Extract the Files
+---
 
-&#x20; 1. Right-click the downloaded .zip
+## Browser Extension Control
 
-&#x20; 2. Click Extract All
+Policy:
 
-&#x20;    You’ll see a folder like: googlechromeenterprisebundle64
+```text
+ExtensionInstallBlocklist = *
+```
 
+Purpose:
 
+* all extensions are blocked by default. Extensions that are explicitly listed in the allowlist are allowed if they are signed.
+* Reduces browser attack surface
+* Mitigates credential theft and browser hijacking risks
 
-&#x20; Locate ADMX Files
+---
 
-&#x20; 1. Go inside:
+## Safe Browsing Enforcement
 
-&#x20;     Configuration/
+Policy:
 
-&#x20;  └── admx/
+```text
+SafeBrowsingProtectionLevel = 2
+```
 
-&#x20;         Inside you’ll find:
+Purpose:
 
+* Protects against phishing websites
+* Detects malicious downloads
+* Improves web threat protection
 
+---
 
-&#x20;         chrome.admx
+## Incognito Restriction
 
-&#x20;         google.admx
+Policy:
 
-&#x20;         Language folder (e.g., en-US)
+```text
+IncognitoModeAvailability = incognito mode disabled
+```
 
-&#x20;     
+Purpose:
 
-\* Copy files chrome.admx, google.admx and Paste into: `C:\\Windows\\PolicyDefinitions`
+* Improves visibility and accountability
+* Prevents policy bypass attempts
+* Ensures browser controls remain enforced
 
+---
 
+## Developer Tools Restriction
 
-Copy Language Files 
+Policy:
 
-&#x20;Open: admx\\en-US\\
+```text
+DeveloperToolsAvailability = disallow usage of the developer tools
+```
 
-&#x20;Copy chrome.adml, google.adml and Paste into: 'C:\\Windows\\PolicyDefinitions\\en-US'
+Purpose:
 
-&#x20; 
+* Reduces browser misuse
+* Prevents unauthorized browser manipulation
+* Supports endpoint hardening objectives
 
+---
 
+## Browser Hardening Baseline
 
-\### 2. Create a Group Policy Object (GPO)
+Additional security controls enforced through Group Policy:
 
+* Disable Password Manager
+* Disable Credential Storage
+* Disable Guest Mode
+* Restrict Browser Extensions
+* Force Safe Browsing
+* Restrict Downloads
+* Disable Incognito Mode
+* Disable Developer Tools
 
+These settings establish a secure browser baseline across all managed endpoints.
 
-\* Open \*\*Group Policy Management Console\*\*  
+---
 
-\* Right-click domain → \*\*Create GPO\*\*  
+## Implementation Steps
 
-\* Name: `Block Email Attachments`
+### 1. Install Chrome ADMX Templates
 
+Download the Google Chrome Enterprise Bundle.
 
+Extract:
 
-\### 3. Configure Chrome Download Restrictions
+```text
+Configuration\admx
+```
 
+Copy:
 
+```text
+chrome.admx
+google.admx
+```
+
+To:
+
+```text
+C:\Windows\PolicyDefinitions
+```
+
+Copy language files:
+
+```text
+chrome.adml
+google.adml
+```
+
+To:
+
+```text
+C:\Windows\PolicyDefinitions\en-US
+```
+
+---
+
+### 2. Create Group Policy Object
+
+Open:
+
+```text
+Group Policy Management Console (GPMC)
+```
+
+Create:
+
+```text
+Enterprise Browser Security Baseline
+```
+
+---
+
+### 3. Configure Chrome Policies
 
 Navigate to:
 
+```text
+User Configuration
+ └ Policies
+    └ Administrative Templates
+       └ Google
+          └ Google Chrome
+```
 
+Configure:
 
-User Configuration → Policies → Administrative Templates → Google → Google Chrome  
+* Download Restrictions
+* URL Allowlist
+* URL Blocklist
+* Extension Control
+* Safe Browsing
+* Incognito Restriction
+* Developer Tools Restriction
 
+---
 
+### 4. Link and Deploy
 
-Enable:
+Link the GPO to the domain or Organizational Unit (OU).
 
+Apply:
 
+```cmd
+gpupdate /force
+```
 
-\* \*\*Download Restrictions\*\* → Set to \*\*Block all downloads\*\*
+---
 
+## Enforcing Chrome as the Sole Authorized Browser
 
+### The Problem
 
-\### 4. Apply Additional Security Settings (Optional)
+Without additional controls, users can bypass all Chrome security policies by simply launching Microsoft Edge or Internet Explorer. These browsers:
 
+- Are pre-installed on all Windows 10/11 devices
+- May not have the same download restrictions, URL filtering, or Safe Browsing enforcement
+- Represent a critical security gap in the enterprise browser security baseline
 
+### The Solution
 
-\* Prevent users from bypassing Safe Browsing warnings  
+Three Group Policy configurations work together to ensure Chrome is the only browser users can access:
 
-\* Disable changing download directory
+| Control | Purpose |
+|---------|---------|
+| **Deploy Chrome via GPO** | Ensures Chrome is installed on all domain-joined computers |
+| **Block Microsoft Edge** | Prevents users from launching Edge to bypass policies |
+| **Disable Internet Explorer** | Removes legacy browser access entirely |
 
+---
 
+## Method 1: Deploy Chrome Using GPO Software Installation (MSI)
 
-\### 5. Link GPO
+### Step 1: Download Chrome Enterprise MSI
 
+Go to:
 
 
-\* Link the GPO to the domain or specific Organizational Unit (OU)
+Chrome Enterprise Download
+Download: Google Chrome Enterprise MSI
+Example file: GoogleChromeStandaloneEnterprise64.msi
 
+---
 
+### Step 2: Create a Shared Folder
+On my Domain Controller:
+Create:
+C:\Software\Chrome
+Copy the MSI file into this folder:
+C:\Software\Chrome\GoogleChromeStandaloneEnterprise64.msi
 
-\### 6. Apply Policy
+### Step 3: Share the Folder
 
+1. Right-click the Chrome folder
 
+2. Select Properties → Sharing → Advanced Sharing
 
-\* Restart client machine OR  
+3. Check "Share this folder"
 
-\* Log off and log back in  
+4. Set Share Name: Chrome
 
+5. Click Permissions and add:
+   Group	        Permission
+   Everyone	      Read
+Domain Computers	 Read
 
+6. Click OK twice
 
-\---
+ UNC Path:
+  \\DC01\Chrome
 
+ Full path to the MSI:
+   \\DC01\Chrome\GoogleChromeStandaloneEnterprise64.msi
 
 
-\## 📸 Screenshots
+### Step 4: Verify Access
 
+From your Windows 10 client (CLIENT01):
 
+1. Press Windows + R
 
-\### Before Policy
+2. Type: \\DC01\Chrome
 
+3. Verify you can see: GoogleChromeStandaloneEnterprise64.msi
 
 
-\* User login  
+### Step 5: Create Deployment GPO
 
-\* Email access  
+Open Group Policy Management Console and create a new GPO:
+Deploy Google Chrome
 
-\* Attachment download successful
+### Step 6: Edit the GPO
+Navigate to:
+Computer Configuration
+ └ Policies
+    └ Software Settings
+       └ Software Installation
 
+Right-click Software Installation → New → Package
 
+⚠️ Important: Use UNC Path, NOT Local Path
+✅ Correct	                                                  ❌ Wrong
+\\DC01\Chrome\GoogleChromeStandaloneEnterprise64.msi	        C:\Software\Chrome\GoogleChromeStandaloneEnterprise64.msi
 
-\### GPO Configuration
+### Step 7: Choose Deployment Method
+Select:
+ Assigned
+Click OK
 
+### Step 8: Link the GPO
+Link the Deploy Google Chrome GPO to:
+saada.local
+or specifically to any OU
 
 
-\* GPO creation  
+### Step 9: Update Policy and Restart
+On the Domain Controller:
+ gpupdate /force
 
-\* Policy configuration  
+On the Windows 10 client:
+ gpupdate /force
+ shutdown /r /t 0
 
-\* Chrome policy settings
 
+### Step 10: Verify Installation
+After reboot, verify Chrome is installed:
 
+Method A - Command Line:
+chrome.exe
 
-\### After Policy
+Method B - Control Panel:
+Control Panel → Programs and Features
+Chrome should appear in the installed programs list.
 
+Method C - Chrome Policy Verification:
 
+Open Chrome and go to:
+chrome://policy
+security policies should be active.
 
-\* Download blocked  
 
-\* Error message displayed  
+### Method 2: Software Restriction Policies (SRP)
 
-\* Policy enforcement confirmed
+### GPO Creation and Linking
 
+Create a dedicated GPO specifically for blocking unauthorized browsers:
 
+| Setting | Value |
+|---------|-------|
+| **GPO Name** | `Block Non-Chrome Browsers - SRP` |
+| **Link Location** | `saada.local` (Domain root) |
+| **Enforcement** | Enforced (Enabled) |
 
-\---
+**Why link at the domain level?** Linking at the domain root ensures the policy applies to ALL computers and users, including future workstations that join the domain. This is standard enterprise practice for security baselines.
+This GPO setting blocks specific executables from running, effectively removing alternative browsers as an option for end users 
 
+#### Step 1: Create and Link the GPO
 
-### Additional Security Validation
+1. Open **Group Policy Management Console (GPMC)**
+2. Right-click on `saada.local` → **Create a GPO in this domain, and Link it here...**
+3. Enter the name: `Block Non-Chrome Browsers - SRP`
+4. Click **OK**
 
-- User-initiated downloads from websites are blocked  
-- Download attempts from external sources fail  
-- Demonstrates protection beyond email attachments  
+The GPO is now created and automatically linked to the domain root.
 
-📸 Examples:
-- `/after-policy/normal-download-blocked.png`  
-- `/after-policy/drive-by-blocked.png`
+#### Step 2: Edit the GPO
 
-\---
+1. Right-click on the new GPO → **Edit**
+2. Navigate to:
 
+> `Computer Configuration` → `Policies` → `Windows Settings` → `Security Settings` → `Software Restriction Policies`
 
+*If the folder is empty, right-click on **"Software Restriction Policies"** and select **"New Software Restriction Policies"** .*
 
-\## Security Impact
+#### Step 3: Create Path Rules
 
+Right-click **"Additional Rules"** → **"New Path Rule..."** and configure the following:
 
+| Application to Block | Path to Block | Security Level |
+| :--- | :--- | :--- |
+| **Microsoft Edge** | `%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe` | Disallowed |
+| **Internet Explorer** | `%ProgramFiles%\Internet Explorer\iexplore.exe` | Disallowed |
+| **Portable Executables** | `%UserProfile%\Downloads\*.exe` | Disallowed |
 
-\* Prevents malware downloads  
+**Adding each rule:**
+1. Select **"New Path Rule"**
+2. Paste the path into the **Path** field
+3. Set **Security level** to **Disallowed**
+4. Click **OK**
+5. Repeat for all three paths
 
-\* Reduces phishing attack risk  
+> **Why block the Downloads folder?** Standard users cannot install software, but they might run "Portable" versions of browsers directly from their Downloads folder. This rule prevents any executable from running from that location, closing a major security gap.
 
-\* Enforces organizational security policies  
+#### Step 4: Configure Security Filtering (Optional but Recommended)
 
-\* Demonstrates centralized IT control  
+By default, the GPO applies to `Authenticated Users`. To ensure it applies correctly:
 
+1. Select the GPO `Block Non-Chrome Browsers - SRP`
+2. Click the **Scope** tab
+3. Under **Security Filtering**, ensure `Authenticated Users` is present
+4. (Optional) Add specific security groups if you need to exclude admins
 
 
-\---
+#### Step 5: Verification
 
+> **Important:** Computer Configuration policies (including AppLocker and Software Restriction Policies) require a reboot to fully apply. A simple `gpupdate /force` updates the registry, but the Application Identity Service and security policies do not fully activate until the next system startup.
 
-### Protection Against Drive-By Downloads
+### Order of Operations (Critical)
 
-By blocking all downloads at the browser level, this policy also reduces the risk of drive-by download attacks.
+Policies must be applied in this specific order:
 
-Drive-by downloads occur when a user visits a malicious or compromised website that attempts to download files without the user's full awareness.
+| Step | Machine | Command/Action | Why |
+|------|---------|----------------|-----|
+| 1 | **Domain Controller** | `gpupdate /force` | Ensures GPO changes are replicated to SYSVOL |
+| 2 | **Domain Controller** | `shutdown /r /t 0` | DC reboot ensures security policies are loaded |
+| 3 | **Wait 5 minutes** | - | Allows replication to complete |
+| 4 | **Windows 10 Client** | `gpupdate /force` | Pulls latest GPO from DC |
+| 5 | **Windows 10 Client** | `shutdown /r /t 0` | **REQUIRED** for AppLocker/SRP enforcement |
+| 6 | **Windows 10 Client** | Log in after reboot | Policies now fully active |
 
-While modern browsers require user interaction for most downloads, this control ensures that:
+### Step-by-Step Commands
 
-- Any attempted download is completely blocked  
-- Users cannot accidentally download malicious files  
-- Malware delivery via compromised websites is prevented  
+**On the Domain Controller:**
+```cmd
+gpupdate /force
+shutdown /r /t 0
 
-This extends protection beyond email security to general web browsing.
 
-\---
+### Summary: Browser Enforcement GPOs
 
+| GPO Name | Link Location | Purpose |
+|----------|---------------|---------|
+| `Enterprise Browser Security Baseline` | `saada.local` | Chrome security policies (downloads, URLs, extensions) |
+| `Deploy Google Chrome` | `saada.local` | Installs Chrome MSI on all computers |
+| `Block Non-Chrome Browsers - SRP` | `saada.local` | Blocks Edge, IE, and portable executables |
 
+All three GPOs work together to ensure Chrome is the only available and properly secured browser in the domain.
 
-\## 🔐 Compliance \& Data Loss Prevention (DLP) Impact
 
 
 
-\### Why This Matters
+# Security Validation Testing
 
+## Test 1 – Email Attachment Download
 
+Expected:
 
-Data Loss Prevention (DLP) is about preventing sensitive information from leaving your organization without authorization. This project demonstrates how a single GPO configuration enforces DLP controls:
+* Download blocked
 
+Result:
 
+* Successful enforcement
 
-\#### 1. Prevents Unauthorized File Transfers
+Screenshot:
 
+```text
+after-policy/download-restriction/email-download-blocked.png
+```
 
+---
 
-| Scenario | Without DLP (Before) | With DLP (After) |
+## Test 2 – Website Download
 
-|----------|--------------------|----------------|
+Expected:
 
-| Employee receives confidential financial report via email | Downloads to personal device → Can forward, copy to USB, upload to personal cloud | BLOCKED - Cannot download in first place |
+* Download blocked
 
-| HR receives resume with SSNs and personal data | Downloads attachment → Data now on local machine, vulnerable to theft | BLOCKED - Data stays in email server, properly secured |
+Result:
 
-| Executive receives M\&A confidential documents | Downloads to laptop → If laptop stolen, documents compromised | BLOCKED - Documents never leave secure email environment |
+* Successful enforcement
 
+Screenshot:
 
+```text
+after-policy/download-restriction/website-download-blocked.png
+```
 
-\#### 2. Real-World DLP Controls Your GPO Enforces
+---
 
+## Test 3 – Unauthorized Website Access
 
+Expected:
 
-| GPO Configuration | DLP Control Achieved |
+* Website blocked
 
-|------------------|--------------------|
+Result:
 
-| Block all downloads | Data cannot leave secure email environment |
+* Successful enforcement
 
-| Disable download directory | Users can't redirect to unprotected locations |
+Screenshot:
 
-| Safe browsing enforcement | Prevents bypassing security warnings |
+```text
+after-policy/url-filtering/site-blocked.png
+```
 
+---
 
+## Test 4 – Extension Installation
 
-\---
+Expected:
 
+* Installation blocked
 
+Result:
 
-\### 🔗 Compliance Framework Mapping
+* Successful enforcement
 
+Screenshot:
 
+```text
+after-policy/extension-control/extension-blocked.png
+```
 
-| Framework | Control | How Your GPO Addresses It |
+---
 
-|----------|--------|--------------------------|
+## Test 5 – Incognito Mode
 
-| \*\*ISO 27001\*\* | A.8.2 - User Endpoint Devices | Enforces security on Windows 10 endpoints across the domain |
+Expected:
 
-| \*\*ISO 27001\*\* | A.8.7 - Protection from Malware | Blocks email attachments to prevent malware delivery |
+* Disabled
 
-| \*\*ISO 27001\*\* | A.13.2 - Information Transfer | Prevents unauthorized data transfer through email downloads |
+Result:
 
-| \*\*ISO 27001\*\* | A.12.6 - Technical Vulnerability Management | Centralized policy ensures consistent security |
+* Successful enforcement
 
-| \*\*NIST 800-53\*\* | PR.AC-3 / PR.DS-5 / PR.IP-1 | Access control, leakage protection, baseline security across endpoints |
+Screenshot:
 
-| \*\*HIPAA\*\* | 164.312(a)(1), 164.312(e)(1), 164.308(a)(5) | Controls access and transmission of PHI, enforces security awareness |
+```text
+after-policy/incognito-disabled/incognito-disabled.png
+```
 
-| \*\*GDPR\*\* | Article 32 / Article 25 / Article 5(1)(f) | Technical measures secure personal data and maintain integrity |
+---
 
-| \*\*PCI DSS\*\* | Requirement 6 - Secure Systems | Enforces consistent endpoint security configuration |
+## Test 6 – Developer Tools
 
+Expected:
 
+* Disabled
 
-\---
+Result:
 
+* Successful enforcement
 
+Screenshot:
 
-\### GDPR (European Privacy Law) Compliance
+```text
+after-policy/developer-tools-disabled/devtools-disabled.png
+```
 
+---
 
+## Test 7 – Policy Verification
 
-My Group Policy implementation aligns with key GDPR principles by enforcing \*\*technical data protection controls\*\* at the endpoint level.
+Verification Method:
 
+```text
+On Windows 10 client, open Chrome and go to
+chrome://policy
+```
 
+Policies Verified:
 
-| GDPR Article | Control Goal | How Your GPO Meets It |
+* DownloadRestrictions
+* URLAllowlist
+* URLBlocklist
+* ExtensionInstallBlocklist
+* SafeBrowsingProtectionLevel
+* IncognitoModeAvailability
+* DeveloperToolsAvailability
 
-|-------------|--------------|----------------------|
+Screenshot:
 
-| \*\*Article 32 – Security of Processing\*\* | Ensure personal data is processed securely, with appropriate technical and organizational measures | Blocks email attachment downloads, preventing sensitive data from being saved to local or unsecured devices. Reduces risk of unauthorized access, malware infection, or accidental data leaks. |
+```text
+after-policy/chrome-policy/chrome-policy.png
+```
 
-| \*\*Article 25 – Data Protection by Design and by Default\*\* | Embed data protection into system design and default configurations | The GPO automatically applies to all domain-joined users. Users cannot bypass the control, ensuring protection is enforced by default. |
+---
 
-| \*\*Article 5(1)(f) – Integrity and Confidentiality\*\* | Maintain data integrity and confidentiality, protecting against unauthorized or accidental loss | Attachments never leave the secure email environment, ensuring personal data remains confidential and protected from compromise. |
+## Test 8 – Group Policy Verification
 
+Verification Method:
 
+```cmd
+gpresult /h report.html
+```
 
-\*\*Key Takeaways:\*\*  
+Screenshot:
 
-\* Email attachments containing sensitive information (e.g., financial data, HR documents, medical records) \*\*cannot be downloaded\*\*, mitigating risks of data breaches.  
+```text
+after-policy/gpresult/gpresult-policy-applied.png
+```
 
-\* The policy enforces GDPR principles \*\*without requiring user intervention\*\*, demonstrating both preventive and systemic data protection.  
+---
 
-\* This is a \*\*real-world example of a technical control\*\* directly supporting GDPR compliance in an enterprise environment.
+## Screenshots
 
+### Before Policy
 
+* User Login
+* Email Access
+* Successful Attachment Download
+* Access any website
+* Browser extensions can be installed freely
+* Developer tools are accessible
+* Incognito mode is available
+* Files can be downloaded from any source
 
-\### Real-World Business Scenarios
+### GPO Configuration
 
+* Group policy creation, linking to the domain(saada.local) and editing.
+* Downloads policy
+* Urls filtering policy
+* Extension policy
+* Incognito policy
+* Developer tools policy
+* Safe browsing policy
+* Chrome Administrative Templates
 
+### After Policy
 
-\*\*Financial Services:\*\*  
+* Download Blocked
+* Website Blocked
+* Extension Blocked
+* Incognito Disabled
+* Developer Tools Disabled
 
-\- Problem: Bank employees receiving SSNs  
+---
 
-\- Solution: GPO blocks attachments, ensuring secure email handling  
+## Security Impact
 
-\- Compliance: GLBA  
+* Prevents malware downloads
+* Reduces phishing attack risk
+* Mitigates ransomware delivery vectors
+* Restricts unauthorized web access
+* Supports Data Loss Prevention (DLP)
+* Standardizes browser security controls
+* Demonstrates centralized IT governance
 
+---
 
+## Protection Against Drive-By Downloads
 
-\*\*Government Agency:\*\*  
+By restricting browser downloads and enforcing Safe Browsing, this implementation significantly reduces exposure to drive-by download attacks.
 
-\- Problem: Classified documents emailed internally  
+This prevents users from unknowingly downloading malicious payloads from compromised websites.
 
-\- Solution: Centralized GPO prevents downloads  
+---
 
-\- Compliance: FISMA  
+# Security Outcomes
 
+This implementation successfully:
 
+* Reduced browser-based malware delivery risks
+* Mitigated drive-by download attacks
+* Restricted unauthorized website access
+* Reduced browser extension attack surface
+* Improved endpoint security standardization
+* Supported DLP objectives through download control
+* Strengthened phishing protection using Safe Browsing
+* Centralized browser security management across the domain
 
-\*\*Healthcare Organization:\*\*  
+---
 
-\- Problem: PHI emailed between departments  
+## Compliance & Data Loss Prevention (DLP) Impact
 
-\- Solution: Blocked downloads keep PHI in secure email  
+This project enforces Data Loss Prevention (DLP) principles by restricting browser-based data exfiltration at the endpoint level. By controlling downloads, extensions, and unsafe browsing behavior through Active Directory GPO, sensitive data is prevented from leaving the organization through common attack vectors such as email attachments and web downloads.
 
-\- Compliance: HIPAA  
+Key DLP Controls Implemented
+Control	Security Outcome
+Download Restrictions	Prevents local storage of potentially sensitive files
+URL Allowlist/Blocklist	Limits access to untrusted or malicious websites
+Safe Browsing Enforcement	Reduces phishing and malware exposure
+Extension Control	Prevents data leakage through malicious browser extensions
+Compliance Framework Mapping
+Framework	Alignment
+ISO 27001	Endpoint security, malware protection, secure information transfer
+NIST 800-53	Access control, data leakage prevention, secure configuration baselines
+GDPR	Data protection by design, confidentiality, and secure processing
+HIPAA	Safeguards for electronic protected health information (ePHI)
+PCI DSS	Secure system configuration and access control enforcement
 
+---
 
+## Security Principles Demonstrated
 
-\---
+* Least Privilege
+* Defense in Depth
+* Centralized Policy Enforcement
+* Endpoint Hardening
+* Browser Security Governance
 
+---
 
+## Key Learning Outcomes
 
-\### Business Impact Metrics
+* Active Directory Administration
+* Group Policy Management
+* Chrome Enterprise Administration
+* Browser Security Hardening
+* Endpoint Security Controls
+* Data Loss Prevention Concepts
+* Security Baseline Development
+* Enterprise Security Operations
 
+---
 
+## Future Improvements
 
-\*\*Before Implementation:\*\*
+* USB Storage Restriction via GPO
+* Application Whitelisting (AppLocker)
+* Microsoft Defender Advanced Policies
+* SIEM Integration (Splunk / Microsoft Sentinel)
+* Security Event Monitoring
+* Browser Security Reporting
 
+---
 
+## Author
 
-\* Users could download any attachment anywhere  
+**Abdirahman Ali**
 
-\* No control over storage of sensitive data  
+GitHub: https://github.com/abdira
 
-\* 100% risk exposure to email malware  
+LinkedIn: https://www.linkedin.com/in/abdirahman-ali-5b8a2b3b4/
 
+---
 
+## Project Value
 
-\*\*After Implementation:\*\*
+This project demonstrates practical enterprise-level experience with:
 
+* Active Directory
+* Group Policy
+* Browser Security Hardening
+* Endpoint Protection
+* Data Loss Prevention
+* Security Compliance Controls
+* Enterprise Security Operations
 
-
-\* Centralized control on all endpoints  
-
-\* Data protected at source (cannot leave email)  
-
-\* Policy applied organization-wide in minutes  
-
-
-
-\*\*Cost Savings Example:\*\*  
-
-
-
-Organization with 1,000 employees:
-
-
-
-\* Without GPO: $50/user for security training = $50,000  
-
-\* With GPO: Enforced policy = $0/user = $0  
-
-
-
-Real-World References:
-
-
-
-IBM Cost of a Data Breach Report 2024 - Average breach cost $4.45M
-
-Verizon DBIR 2024 - 94% of malware delivered via email
-
-Gartner - "DLP is a critical control for compliance"
-
-
-
-\---
-
-
-
-\### Audit-Ready Documentation
-
-
-
-\* ✅ \*\*Policy Configuration Evidence\*\* – Screenshots of GPO settings  
-
-\* ✅ \*\*Implementation Verification\*\* – RSoP showing applied policies  
-
-\* ✅ \*\*Effectiveness Testing\*\* – Before/after demonstration  
-
-\* ✅ \*\*Centralized Management\*\* – One policy for all endpoints  
-
-
-
-\---
-
-
-
-\## Real-World Use Case
-
-
-
-Attackers commonly use email attachments to deliver malware, ransomware, or phishing content. Enterprises enforce GPOs to:
-
-
-
-\* Reduce ransomware attacks  
-
-\* Prevent sensitive data leaks  
-
-\* Centralize IT security policy enforcement  
-
-
-
-\---
-
-
-
-\## Security Principles Demonstrated
-
-
-
-\* Least Privilege Access  
-
-\* Defense in Depth  
-
-\* Centralized Policy Enforcement  
-
-\* Endpoint Hardening  
-
-
-
-\---
-
-
-
-\## Key Learning Outcomes
-
-
-
-\* Hands-on experience with Active Directory  
-
-\* Group Policy configuration and deployment  
-
-\* Browser-level security enforcement  
-
-\* Enterprise security best practices  
-
-
-
-\---
-
-
-
-\## Future Improvements
-
-
-
-\* Implement USB storage blocking via GPO  
-
-\* Integrate SIEM monitoring (e.g., Splunk)  
-
-\* Add application whitelisting (AppLocker)  
-
-\* Simulate malware delivery before/after control  
-
-
-
-\---
-
-
-
-\## Author
-
-
-
-\*\*Abdirahman Ali\*\*  
-
-
-
-\* GitHub: https://github.com/abdira  
-
-\* LinkedIn: https://www.linkedin.com/in/abdirahman-ali-5b8a2b3b4/  
-
-
-
-\---
-
-
-
-\## ⭐ Project Value
-
-
-
-This project showcases practical, real-world IT and cybersecurity skills aligned with enterprise environments, making it highly relevant for:
-
-
-
-\* Scholarship applications  
-
-\* Entry-level IT roles  
-
-\* Cybersecurity (Blue Team) positions  
-
+making it highly relevant for System Administration, Blue Team, SOC Analyst, and Cybersecurity Engineering roles."
